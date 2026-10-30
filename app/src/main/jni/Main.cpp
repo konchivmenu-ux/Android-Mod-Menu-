@@ -1,29 +1,28 @@
 // language: C++, file: Main.cpp, target: Android NDK
-// *LGL Mod Menu template with God circle*
-
 #include <jni.h>
 #include <string>
 #include <unistd.h>
+#include <pthread.h>
 #include "Includes/Logger.h"
 #include "Includes/obfuscate.h"
 #include "Includes/Utils.h"
 #include "Menu/Menu.h"
 
-// Здесь будут оффсеты (пока заглушки)
-bool GodMode = false;
 bool FreeVersion = false;
 bool PaidVersion = false;
 
+// Главное меню
 void DrawMenu() {
     static bool activated = false;
     static bool showWelcome = false;
 
     if (!activated) {
-        // Рисуем круг God
+        ImGui::SetCursorPosX(ImGui::GetWindowWidth() / 2 - 50);
         if (ImGui::Button("God", ImVec2(100, 40))) {
             activated = true;
             showWelcome = true;
         }
+        ImGui::SetCursorPosX(ImGui::GetWindowWidth() / 2 - 60);
         ImGui::TextDisabled("нажми для активации");
     } else {
         if (showWelcome) {
@@ -47,7 +46,6 @@ void DrawMenu() {
             ImGui::Separator();
             ImGui::TextColored(ImVec4(0, 1, 0, 1), "Free version active");
             ImGui::TextWrapped("Базовые фичи работают. Расширение — по offsets сборки.");
-            // ТУТ БУДУТ ХУКИ ПАМЯТИ (ЧИТЫ)
         }
 
         if (PaidVersion) {
@@ -58,10 +56,21 @@ void DrawMenu() {
     }
 }
 
-// Точка входа в мод-меню
+// Поток для отрисовки (именно его не хватало)
+void *menu_thread(void *) {
+    while (true) {
+        // Инициализация и отрисовка меню (зависит от шаблона LGL)
+        if (isMenuOpen) {
+            DrawMenu();
+        }
+        sleep(1);
+    }
+    return nullptr;
+}
+
+// Точка входа
 __attribute__((constructor))
 void lib_main() {
-    // Запускаем поток отрисовки меню
     pthread_t ptid;
     pthread_create(&ptid, NULL, menu_thread, NULL);
 }
