@@ -11,7 +11,7 @@ bool FreeVersion = false;
 bool PaidVersion = false;
 bool isActivated = false;
 
-// --- Отрисовка кастомного меню ---
+// --- 1. Логика меню ---
 void DrawMenu() {
     if (!isActivated) {
         if (ImGui::Button("God", ImVec2(100, 40))) {
@@ -28,7 +28,7 @@ void DrawMenu() {
     }
 }
 
-// --- Функции LGL (теперь они живут прямо в Main.cpp) ---
+// --- 2. Функции для LGL (заменяют Menu.cpp) ---
 void Init(JNIEnv *env, jobject thiz, jobject ctx, jobject title, jobject subtitle) {
     setText(env, title, OBFUSCATE("<b>Godcheat</b>"));
     setText(env, subtitle, OBFUSCATE("<b>Counter Flame</b>"));
@@ -54,7 +54,7 @@ jobjectArray SettingsList(JNIEnv *env, jobject activityObject) {
     return (ret);
 }
 
-// --- Точка входа ---
+// --- 3. Точка входа ---
 void *menu_thread(void *) {
     return nullptr;
 }
