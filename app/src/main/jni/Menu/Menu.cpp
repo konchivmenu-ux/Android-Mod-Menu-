@@ -11,7 +11,7 @@ bool FreeVersion = false;
 bool PaidVersion = false;
 bool isActivated = false;
 
-// --- Логика меню ---
+// --- Отрисовка кастомного меню (если понадобится внутриигровой оверлей) ---
 void DrawMenu() {
     if (!isActivated) {
         if (ImGui::Button("God", ImVec2(100, 40))) {
@@ -23,7 +23,6 @@ void DrawMenu() {
         ImGui::Text("Версия:");
         if (ImGui::Button("Free", ImVec2(-1, 40))) { FreeVersion = true; PaidVersion = false; }
         if (ImGui::Button("Paid (нужен ключ)", ImVec2(-1, 40))) { PaidVersion = true; FreeVersion = false; }
-
         if (FreeVersion) { ImGui::Text("Free version active"); }
         if (PaidVersion) { ImGui::Text("Paid version - ключ в ТГК автора"); }
     }
